@@ -54,29 +54,55 @@ function Wiki(id, styles, sintax){
     //Metodo de guardar en JSON las cadenas de texto recogidas en el textarea.
     //@id identificador a guardar (ya lo tenemos al crear el objeto)
     this.guardarTextarea = function(id){
-       var area = document.getElementById('area1');
-       console.log(area);
-       //var areaText = area.nodeValue; //da element input no el nodo de texto.
-       //var childrenTextarea = area.childNodes; //da 0 nodos hijos??
-       var text = area.value; //variable de tipo string, nos interesa objeto ??
-       alert(typeof text);
+        var area = document.getElementById('area1');
+        console.log(area);
+        //var areaText = area.nodeValue; //da element input no el nodo de texto.
+        //var childrenTextarea = area.childNodes; //da 0 nodos hijos??
+        var text = new String(area.value); //variable de tipo string, nos interesa objeto ??
+        //alert(text);
+        console.log(text);
+
+        var sections = splitSections(text, "===");
+
+
+        //Metodo que convertirá el textarea y compara los simbolos de la sintaxis de la wiki para formatear la vista de la wiki.
+        function splitSections(string, caracter){
+            var arraySections = new Array();
+            var count = 0;
+
+            //Recorro el string para detectar las secciones
+            for (var i = 0; i< string.length; i++) {
+
+                var t = i + 2;
+                //creo un objeto por cada section y los atributos id, numero de inicio y el fin de la misma.
+                if(string[i] == "=" && string[i++] == "=" && string[t] == "="){
+                    count = count+1;
+                    arraySections["section"+count] = {};
+                    arraySections["section"+count].id = count;
+                    arraySections["section"+count].inicio = i;
+                    // TODO: NO es correcto puesto que me establece mal el fin
+                    if(count != 1){
+                        arraySections["section"+count].fin = i -1;
+                    }else{
+                        arraySections["section"+count].fin = string.length;
+                    }
+                }
+            }
+
+            //Extraigo los titulos y guardo los strings de cada section e su objeto
+            for (var i = 0; i < arraySections.length; i++){
+
+            }
+
+
+            console.log(arraySections);
+            //var strings = string.split(caracter);
+            //return strings;
+        };
+
+        //console.log(sections);
 
        // return el return ha de llamar a convertirTextarea para guardarla en formato convertido
-
-    };
-
-
-    //Metodo que convertirá el textarea y compara los simbolos de la sintaxis de la wiki para formatear la vista de la wiki.
-    this.convertirTextarea = function(id){
-
-       //Trabajar los strings con la sintaxis para formatear el contenido.
-       // Otra funcion u objeto??
-       for (var i = 0; i < text.length; i++) {
-           igual = 0;
-           if(text[i] == "="){
-               igual = igual+1;
-           }
-       }
     };
 
     //Metodo que aplica una lista de estilos a un elemento.

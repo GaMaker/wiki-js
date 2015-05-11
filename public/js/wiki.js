@@ -69,6 +69,7 @@ function Wiki(id, styles, sintax){
         function splitSections(string, caracter){
             var arraySections = new Array();
             var count = 0;
+            var lastCount;
 
             //Recorro el string para detectar las secciones
             for (var i = 0; i< string.length; i++) {
@@ -76,18 +77,22 @@ function Wiki(id, styles, sintax){
                 var t = i + 2;
                 //creo un objeto por cada section y los atributos id, numero de inicio y el fin de la misma.
                 if(string[i] == "=" && string[i++] == "=" && string[t] == "="){
+                    lastCount = count;
+                    console.log(lastCount);
                     count = count+1;
                     arraySections["section"+count] = {};
                     arraySections["section"+count].id = count;
                     arraySections["section"+count].inicio = i;
-                    // TODO: NO es correcto puesto que me establece mal el fin
-                    if(count != 1){
-                        arraySections["section"+count].fin = i -1;
-                    }else{
-                        arraySections["section"+count].fin = string.length;
+
+                    //Si he detectado otra seccion, como no es la ultima le establezco el fin de la anterior
+                    if(count > 1){
+                        arraySections["section"+lastCount].fin = i -1;
                     }
                 }
             }
+
+            // Y cuando salgo del for le agrego al ultimo objeto su fin que sera el fin del String
+            arraySections["section"+count ].fin = string.length;
 
             //Extraigo los titulos y guardo los strings de cada section e su objeto
             for (var i = 0; i < arraySections.length; i++){
@@ -97,12 +102,13 @@ function Wiki(id, styles, sintax){
 
             console.log(arraySections);
             //var strings = string.split(caracter);
-            //return strings;
+            return arraySections;
         };
 
         //console.log(sections);
 
        // return el return ha de llamar a convertirTextarea para guardarla en formato convertido
+       return sections;
     };
 
     //Metodo que aplica una lista de estilos a un elemento.

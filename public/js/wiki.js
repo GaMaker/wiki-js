@@ -41,6 +41,8 @@ function Wiki(id, styles, sintax){
     this.insertarTextarea = function(id){
         var textarea = document.createElement("textarea");
         textarea.id = "area1";
+        textarea.rows = 20;
+        textarea.cols = 100;
         //aplicarEstilos(textarea, estilos);
         tapiz.appendChild(textarea);
 
@@ -60,6 +62,8 @@ function Wiki(id, styles, sintax){
         //var childrenTextarea = area.childNodes; //da 0 nodos hijos??
         var text = new String(area.value); //variable de tipo string, nos interesa objeto ??
         //alert(text);
+        var textString = area.value;
+        console.log(textString);
         console.log(text);
 
         var sections = splitSections(text, "===");
@@ -80,22 +84,25 @@ function Wiki(id, styles, sintax){
                     lastCount = count;
                     console.log(lastCount);
                     count = count+1;
-                    arraySections["section"+count] = {};
-                    arraySections["section"+count].id = count;
-                    arraySections["section"+count].inicio = i;
+
+                    //TODO: creo que crea objetos fuera de la matriz pero dentro del objeto, con lo que no se podra recorrer. comprobar
+                    arraySections[count] = {};
+                    arraySections[count].id = count;
+                    arraySections[count].inicio = i;
 
                     //Si he detectado otra seccion, como no es la ultima le establezco el fin de la anterior
                     if(count > 1){
-                        arraySections["section"+lastCount].fin = i -1;
+                        arraySections[lastCount].fin = i -1;
                     }
                 }
             }
 
             // Y cuando salgo del for le agrego al ultimo objeto su fin que sera el fin del String
-            arraySections["section"+count ].fin = string.length;
+            arraySections[count].fin = string.length;
 
-            //Extraigo los titulos y guardo los strings de cada section e su objeto
+            //Extraigo los titulos y guardo los strings de cada section en su objeto
             for (var i = 0; i < arraySections.length; i++){
+                console.log(arraySections[i]);
 
             }
 

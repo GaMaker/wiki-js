@@ -89,8 +89,13 @@ function Wiki(id, styles, sintax){
                     arraySections[count] = {};
                     //El id será igual al inidice del array
                     arraySections[count].id = count;
-                    //El inicio de la section es en el que estoy ahora mismo.
-                    arraySections[count].inicio = i;
+                    //El inicio del título de la section es en el que estoy ahora mismo.
+                    arraySections[count].startHeader = i;
+
+                    //Si he detectado otra seccion, como no es la ultima le establezco el fin de la anterior
+                    if(count > 1){
+                        arraySections[lastCount].fin = i -1;
+                    }
 
                     console.log(i);
                     //Localizo el salto de líne posterior al lugar en el que estoy.
@@ -98,18 +103,27 @@ function Wiki(id, styles, sintax){
 
                     console.log(nextSalto);
 
-                    //Guardo el título en el objeto de section
-                    arraySections[count].titulo = string.substring(i+3, nextSalto);
+                    //Guardo el header en el objeto de section
+                    arraySections[count].header = string.substring(i+3, nextSalto);
 
-                    //Si he detectado otra seccion, como no es la ultima le establezco el fin de la anterior
+                    arraySections[count].startSection = nextSalto+1;
+
+                    //Guardo en cada objeto section la cadena restante en bruto y sin título
                     if(count > 1){
-                        arraySections[lastCount].fin = i -1;
+                        arraySections[lastCount].section = string.substring(arraySections[lastCount].startSection, arraySections[lastCount].fin );
+                        console.log(arraySections[lastCount].section);
                     }
+
+                    //console.log(arraySections[lastCount].section);
+
                 }
             }
 
             // Y cuando salgo del for le agrego al ultimo objeto su fin que sera el fin del String
             arraySections[count].fin = string.length;
+
+            //cuando sale del for también aprobecho para guardar el último section
+            arraySections[count].section = string.substring(arraySections[count].startSection, arraySections[count].fin);
 
             console.log(arraySections);
             //var strings = string.split(caracter);

@@ -71,10 +71,14 @@ function Wiki(id, styles, sintax){
 
 
         //Metodo que convertirá el textarea y compara los simbolos de la sintaxis de la wiki para formatear la vista de la wiki.
-        function splitSections(string){
+        function splitSections(cadena){
             var arraySections = new Array();
             var count = 0;
             var lastCount;
+
+            //sustituyo los saltos de linea por el simnbolo ¬
+            //(parace que el parser de JS no lo guarda y después no dispongo de esos saltos en el string)
+            var string = cadena.replace(new RegExp("\n", "g"), "¬");
 
             //Recorro el string para detectar las secciones
             for (var i = 0; i< string.length; i++) {
@@ -99,7 +103,7 @@ function Wiki(id, styles, sintax){
 
                     console.log(i);
                     //Localizo el salto de líne posterior al lugar en el que estoy.
-                    var nextSalto = string.indexOf("\n",i);
+                    var nextSalto = string.indexOf("¬",i);
 
                     console.log(nextSalto);
 

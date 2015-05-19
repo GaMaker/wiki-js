@@ -61,34 +61,45 @@ function Wiki(id, styles, sintax){
         //var areaText = area.nodeValue; //da element input no el nodo de texto.
         //var childrenTextarea = area.childNodes; //da 0 nodos hijos??
         var text = new String(area.value); //variable de tipo string, nos interesa objeto ??
-        //alert(text);
+
+        //Pruebas de atributos de area
         var textString = area.value;
         console.log(textString);
         console.log(text);
 
-        var sections = splitSections(text, "===");
+        var sections = splitSections(text);
 
 
         //Metodo que convertirá el textarea y compara los simbolos de la sintaxis de la wiki para formatear la vista de la wiki.
-        function splitSections(string, caracter){
+        function splitSections(string){
             var arraySections = new Array();
             var count = 0;
             var lastCount;
 
             //Recorro el string para detectar las secciones
             for (var i = 0; i< string.length; i++) {
-
                 var t = i + 2;
-                //creo un objeto por cada section y los atributos id, numero de inicio y el fin de la misma.
+
+                //Cuando tengo 3 = seguidos, estoy en una section...
                 if(string[i] == "=" && string[i++] == "=" && string[t] == "="){
                     lastCount = count;
-                    console.log(lastCount);
                     count = count+1;
 
-                    //TODO: creo que crea objetos fuera de la matriz pero dentro del objeto, con lo que no se podra recorrer. comprobar
+                    //Creo un objeto en el array, en el indice numerico en el que estoy
                     arraySections[count] = {};
+                    //El id será igual al inidice del array
                     arraySections[count].id = count;
+                    //El inicio de la section es en el que estoy ahora mismo.
                     arraySections[count].inicio = i;
+
+                    console.log(i);
+                    //Localizo el salto de líne posterior al lugar en el que estoy.
+                    var nextSalto = string.indexOf("\n",i);
+
+                    console.log(nextSalto);
+
+                    //Guardo el título en el objeto de section
+                    arraySections[count].titulo = string.substring(i+3, nextSalto);
 
                     //Si he detectado otra seccion, como no es la ultima le establezco el fin de la anterior
                     if(count > 1){
@@ -99,13 +110,6 @@ function Wiki(id, styles, sintax){
 
             // Y cuando salgo del for le agrego al ultimo objeto su fin que sera el fin del String
             arraySections[count].fin = string.length;
-
-            //Extraigo los titulos y guardo los strings de cada section en su objeto
-            for (var i = 0; i < arraySections.length; i++){
-                console.log(arraySections[i]);
-
-            }
-
 
             console.log(arraySections);
             //var strings = string.split(caracter);
